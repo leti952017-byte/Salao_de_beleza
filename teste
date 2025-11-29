@@ -1,0 +1,47 @@
+INSERT INTO Cliente (nome, telefone, email) VALUES 
+('João Silva', '123456789', 'joao@example.com'),
+('Maria Souza', '987654321', 'maria@example.com');
+
+
+INSERT INTO Profissional (nome, especialidade) VALUES 
+('Carlos Pereira', 'Cabelo'),
+('Ana Costa', 'Estética');
+
+
+INSERT INTO Servico (nome, preco, duracao_minutos) VALUES 
+('Corte de Cabelo', 50.00, 30),
+('Limpeza de Pele', 80.00, 45);
+
+INSERT INTO Produto (nome, categoria, quantidade_estoque) VALUES 
+('Shampoo', 'Higiene', 100),
+('Creme Hidratante', 'Beleza', 50);
+
+INSERT INTO Agendamento (id_cliente, id_profissional, id_servico, data_hora) VALUES 
+(1, 1, 1, '2025-11-30 10:00:00'),
+(2, 2, 2, '2025-11-30 11:00:00');
+
+INSERT INTO Pagamento (id_agendamento, valor_pago, forma_pagamento) VALUES 
+(1, 50.00, 'Cartão de Crédito'),
+(2, 80.00, 'Dinheiro');
+
+INSERT INTO Uso_produto (id_servico, id_produto, quantidade_usada) VALUES 
+(1, 1, 1),
+(2, 2, 1);
+
+SELECT * FROM Cliente;
+
+SELECT * FROM Produto;
+
+
+SELECT a.*, c.nome AS cliente_nome, p.nome AS profissional_nome, s.nome AS servico_nome
+FROM Agendamento a
+JOIN Cliente c ON a.id_cliente = c.id_cliente
+JOIN Profissional p ON a.id_profissional = p.id_profissional
+JOIN Servico s ON a.id_servico = s.id_servico;
+
+SELECT * FROM Pagamento;
+
+SELECT up.*, s.nome AS servico_nome, p.nome AS produto_nome
+FROM Uso_produto up
+JOIN Servico s ON up.id_servico = s.id_servico
+JOIN Produto p ON up.id_produto = p.id_produto;
