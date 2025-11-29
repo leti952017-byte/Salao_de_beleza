@@ -1,8 +1,18 @@
+PRAGMA foreign_keys = ON;
+
+------tabela: Cliente-----
 create table Cliente (
-  id_cliente INT PRIMARY KEY AUTO_INCREMENT,
-  nome varchar(100),
+  id_cliente INT PRIMARY KEY AUTOINCREMENT,
+  nome varchar(100) NOT NULL,
   telefone varchar(20),
   email varchar(100),
-  datacadastro date
+  datacadastro DATE DEFAULT CURRENT_DATE
+);
+
+----- tabela Profissional----
+create table Profissional (
+  id_profissional INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  especialidade TEXT
 );
 
