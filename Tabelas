@@ -18,7 +18,7 @@ create table Profissional (
 
 ------- tabela Servico------
 create table Servico (
-  id_servico INTEGER PRIMARY KEY AUTOINCREMET,
+  id_servico INTEGER PRIMARY KEY AUTOINCREMENT,
   nome TEXT NOT NULL,
   preco DECIMAL (10,2) NOT NULL,
   duracao_minutos INTEGER
@@ -39,10 +39,10 @@ create table Agendamento (
   id_profissional INTEGER NOT NULL,
   id_servico INTEGER NOT NULL,
   data_hora DATETIME NOT NULL,
-  status TEXT DEFAUL'pendende',
+  status TEXT DEFAULT'pendende',
   FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
-  FOREIGN KEY (id_profissional) REFERENCES profissional (id_profissional),
-  FOREIGN KEY (id_servico) REFERENCES servico (id_servico)
+  FOREIGN KEY (id_profissional) REFERENCES Profissional (id_profissional),
+  FOREIGN KEY (id_servico) REFERENCES Servico (id_servico)
 );
 
 
@@ -54,7 +54,7 @@ create table Pagamento (
   valor_pago DECIMAL(10,2),
   forma_pagamento TEXT,
   data_pagamento DATE DEFAULT CURRENT_DATE,
-  FOREIGN KEY (id_agendamento) REFERENCES agendamento (id_agendamento)
+  FOREIGN KEY (id_agendamento) REFERENCES Agendamento (id_agendamento)
 );
 
 
@@ -63,6 +63,7 @@ create table Uso_produto (
   id_servico INTEGER NOT NULL,
   id_produto INTEGER NOT NULL,
   quantidade_usada INTEGER NOT NULL,
-  FOREIGN KEY (id_servico) REFERENCES servico (id_servico),
-  FOREIGN KEY (id_produto) REFERENCES produto (id_produto)
+  PRIMARY KEY (id_servico, id_produto),
+  FOREIGN KEY (id_servico) REFERENCES Servico (id_servico),
+  FOREIGN KEY (id_produto) REFERENCES Produto (id_produto)
 );
