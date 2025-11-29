@@ -39,8 +39,8 @@ create table Agendamento (
   id_profissional INTEGER NOT NULL,
   id_servico INTEGER NOT NULL,
   data_hora DATETIME NOT NULL,
-  status TEXT DEFAULT'pendende',
-  FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
+  status TEXT DEFAULT'pendente',
+  FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente),
   FOREIGN KEY (id_profissional) REFERENCES Profissional (id_profissional),
   FOREIGN KEY (id_servico) REFERENCES Servico (id_servico)
 );
