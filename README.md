@@ -1,0 +1,143 @@
+PRAGMA foreign_keys = ON;
+
+------tabela: Cliente-----
+create table Cliente (
+  id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT(100) NOT NULL,
+  telefone TEXT(20),
+  email TEXT(100),
+  datacadastro DATE DEFAULT CURRENT_DATE
+);
+
+----- tabela Profissional----
+create table Profissional (
+  id_profissional INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  especialidade TEXT
+);
+
+------- tabela Servico------
+create table Servico (
+  id_servico INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  preco DECIMAL (10,2) NOT NULL,
+  duracao_minutos INTEGER
+);
+
+-------tabela produto-------
+create table Produto (
+  id_produto INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  categoria TEXT,
+  quantidade_estoque INTEGER DEFAULT 0 
+);
+
+--------tabela agendamento------
+create table Agendamento (
+  id_agendamento INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_cliente INTEGER NOT NULL,
+  id_profissional INTEGER NOT NULL,
+  id_servico INTEGER NOT NULL,
+  data_hora DATETIME NOT NULL,
+  status TEXT DEFAULT'pendente',
+  FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente),
+  FOREIGN KEY (id_profissional) REFERENCES Profissional (id_profissional),
+  FOREIGN KEY (id_servico) REFERENCES Servico (id_servico)
+);
+
+
+
+-------tabela pagamento------
+create table Pagamento (
+  id_pagamento INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_agendamento INTEGER NOT NULL,
+  valor_pago DECIMAL(10,2),
+  forma_pagamento TEXT,
+  data_pagamento DATE DEFAULT CURRENT_DATE,
+  FOREIGN KEY (id_agendamento) REFERENCES Agendamento (id_agendamento)
+);
+
+
+------tabela uso_produto------
+create table Uso_produto (
+  id_servico INTEGER NOT NULL,
+  id_produto INTEGER NOT NULL,
+  quantidade_usada INTEGER NOT NULL,
+  PRIMARY KEY (id_servico, id_produto),
+  FOREIGN KEY (id_servico) REFERENCES Servico (id_servico),
+  FOREIGN KEY (id_produto) REFERENCES Produto (id_produto)
+);
+
+------insert------
+INSERT INTO Cliente (nome, telefone, email) VALUES 
+('João Silva', '123456789', 'joao@example.com'),
+('Maria Souza', '987654321', 'maria@example.com');
+
+
+INSERT INTO Profissional (nome, especialidade) VALUES 
+('Carlos Pereira', 'Cabelo'),
+('Ana Costa', 'Estética');
+
+
+INSERT INTO Servico (nome, preco, duracao_minutos) VALUES 
+('Corte de Cabelo', 50.00, 30),
+('Limpeza de Pele', 80.00, 45);
+
+INSERT INTO Produto (nome, categoria, quantidade_estoque) VALUES 
+('Shampoo', 'Higiene', 100),
+('Creme Hidratante', 'Beleza', 50);
+
+INSERT INTO Agendamento (id_cliente, id_profissional, id_servico, data_hora) VALUES 
+(1, 1, 1, '2025-11-30 10:00:00'),
+(2, 2, 2, '2025-11-30 11:00:00');
+
+INSERT INTO Pagamento (id_agendamento, valor_pago, forma_pagamento) VALUES 
+(1, 50.00, 'Cartão de Crédito'),
+(2, 80.00, 'Dinheiro');
+
+INSERT INTO Uso_produto (id_servico, id_produto, quantidade_usada) VALUES 
+(1, 1, 1),
+(2, 2, 1);
+
+
+------select-------
+SELECT * FROM Cliente;
+
+SELECT * FROM Produto;
+
+
+SELECT a.*, c.nome AS cliente_nome, p.nome AS profissional_nome, s.nome AS servico_nome
+FROM Agendamento a
+JOIN Cliente c ON a.id_cliente = c.id_cliente
+JOIN Profissional p ON a.id_profissional = p.id_profissional
+JOIN Servico s ON a.id_servico = s.id_servico;
+
+SELECT * FROM Pagamento;
+
+SELECT up.*, s.nome AS servico_nome, p.nome AS produto_nome
+FROM Uso_produto up
+JOIN Servico s ON up.id_servico = s.id_servico
+JOIN Produto p ON up.id_produto = p.id_produto;
+
+-------update-------
+UPDATE Cliente 
+SET telefone = '321654987' 
+WHERE id_cliente = 1;
+
+UPDATE Servico 
+SET preco = 60.00 
+WHERE id_servico = 1;
+
+UPDATE Agendamento 
+SET status = 'confirmado' 
+WHERE id_agendamento = 2;
+
+------delete-------
+DELETE FROM Cliente 
+WHERE id_cliente = 1;
+
+DELETE FROM Produto 
+WHERE id_produto = 2;
+
+DELETE FROM Agendamento 
+WHERE id_agendamento = 1;
